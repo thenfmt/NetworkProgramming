@@ -10,6 +10,7 @@ extern int signInCount;
 
 char* GetInputString(char* message)
 {
+    //dynamically allocates memory for the string on the heap to ensure that the return memory address is valid.
     char* str = malloc(sizeof(char) * STRING_LENGTH);
     printf("%s\n", message);
     scanf("%s", str);
@@ -30,38 +31,47 @@ void Register()
         printf("Successful registration \n");
     }
     else 
+    {
         printf("Account existed\n");
+
+        //  release the memory that is no longer needed
+        free(userName);
+    }
 }
 
 void SignIn()
 {
     char* userName = GetInputString("Enter username: ");
+    char* password;
     User* foundUser = SearchByUserName(userName);
     if(foundUser == NULL)
-    {
         printf("Cannot find account\n");
-        return;
-    }
-
-    char* userPassword = GetInputString("Enter user password: ");
-    if(strcmp(foundUser->password, userPassword) != 0) 
-    {
-        printf("Password is incorrect\n");
-
-        foundUser->attempts++;
-        if(foundUser->attempts >= MAX_ATTEMPTS)
-        {
-            foundUser->status = BLOCKED;
-            UpdateAccountStatusInFile(foundUser);
-            printf("Account is blocked\n");
-        }
-    }
     else
     {
-        signInCount++;
-        foundUser->isSignIn = true;
-        printf("Hello %s \n", foundUser->userName);
+        password = GetInputString("Enter user password: ");
+        if(strcmp(foundUser->password, password) != 0) 
+        {
+            printf("Password is incorrect\n");
+
+            foundUser->attempts++;
+            if(foundUser->attempts >= MAX_ATTEMPTS)
+            {
+                foundUser->status = BLOCKED;
+                UpdateAccountStatusInFile(foundUser);
+                printf("Account is blocked\n");
+            }
+        }
+        else
+        {
+            signInCount++;
+            foundUser->isSignIn = true;
+            printf("Hello %s \n", foundUser->userName);
+        }
+        // release the memory that is no longer needed
+        free(password);
     }
+    // release the memory that is no longer needed
+    free(userName);    
 }
 
 void Search()
@@ -70,7 +80,8 @@ void Search()
         printf("You are not sign in\n\n");
     else
     {
-        User* foundUser = SearchByUserName(GetInputString("Enter username to search for: "));
+        char* userName = GetInputString("Enter username to search for: ");
+        User* foundUser = SearchByUserName(userName);
         if(foundUser != NULL)
         {
             char* statusInStr = foundUser->status == ACTIVE ? "active" : "blocked";
@@ -78,6 +89,9 @@ void Search()
         }
         else
             printf("Cannot find account\n");
+        
+        //  release the memory that is no longer needed
+        free(userName);
     }
 }
 
@@ -87,7 +101,8 @@ void SignOut()
         printf("You are not sign in\n");
     else 
     {
-        User* foundUser = SearchByUserName(GetInputString("Enter your username: "));
+        char* userName = GetInputString("Enter your username: ");
+        User* foundUser = SearchByUserName(userName);
         if(foundUser == NULL)
             printf("Cannot find account\n");
         else if(foundUser->isSignIn)
@@ -98,5 +113,8 @@ void SignOut()
         }
         else
             printf("Account is not sign in\n");
+
+        //  release the memory that is no longer needed
+        free(userName);
     }
 }
