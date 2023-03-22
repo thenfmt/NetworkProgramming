@@ -1,5 +1,6 @@
 #ifndef __DATASTRUCTURED_H__
 #define __DATASTRUCTURED_H__
+
 #include <stdbool.h>
 
 #define ACTIVE 1
@@ -12,13 +13,11 @@ typedef struct User
     char* userName;
     char* password;
     int status;
+
+    // These fields serve a functional purpose and will not be saved in the data file.
     int attempts;
     bool isSignIn;
 } User;
-
-User* NewUser(char* userName, char* password);
-User* LoadUser(char* userName, char* password, int status);
-
 
 typedef struct Node
 {
@@ -27,18 +26,20 @@ typedef struct Node
     struct Node* next;
 } Node;
 
-Node* NewNode(User* data);
-
-
 typedef struct
 {
     Node* head;
     Node* tail;
 } LinkedList;
 
+User* NewUser(char* userName, char* password);
+User* LoadUser(char* userName, char* password, int status);
+
+Node* NewNode(User* data);
+
 void NewLinkedList();
 void InsertList(User* user);
-void PrintList();
 User* SearchByUserName(char* userName);
+// void PrintList();    This function is meant to verify the reading process but is no longer necessary.
 
 #endif

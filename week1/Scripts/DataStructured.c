@@ -1,23 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "DataStructured.h"
 
-LinkedList* userList = NULL;
-int signInCount;
+LinkedList* userList = NULL; // This list is used to store all user data that is read from the source file.
+int signInCount; // This variable is used to keep track of the number of accounts that have signed in.
 
+// Create a user with a default status value.
 User* NewUser(char* userName, char* password)
 {
     User* user = (User *)malloc(sizeof(User));
     user->userName = userName;
     user->password = password;
     user->status = ACTIVE;
+    
     user->attempts = 0;
     user->isSignIn = false;
 
     return user;
 }
 
+// Load a user who has an existing status.
 User* LoadUser(char* userName, char* password, int status)
 {
     User* user = (User *)malloc(sizeof(User));
@@ -64,21 +68,6 @@ void InsertList(User* user)
     }
 }
 
-void PrintList()
-{
-    printf("userName\tpassword\tstatus\t\n");
-    Node* curr = userList->head;
-    while (curr != NULL) 
-    {
-        printf( "%s\t\t%s\t\t%d\t\n",
-                curr->data->userName,
-                curr->data->password,
-                curr->data->status);
-
-        curr = curr->next;
-    }
-}
-
 User* SearchByUserName(char* userName)
 {
     Node* curr = userList->head;
@@ -92,5 +81,22 @@ User* SearchByUserName(char* userName)
 
     return NULL;
 }
+
+// This function is meant to verify the reading process but is no longer necessary.
+// void PrintList()
+// {
+//     printf("userName\t\tpassword\t\tstatus\n");
+//     Node* curr = userList->head;
+//     while (curr != NULL) 
+//     {
+//         printf( "%s\t\t\t%s\t\t\t%d\n",
+//                 curr->data->userName,
+//                 curr->data->password,
+//                 curr->data->status);
+
+//         curr = curr->next;
+//     }
+// }
+
 
 

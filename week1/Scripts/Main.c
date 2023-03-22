@@ -49,7 +49,6 @@ int main()
     signInCount = 0;
     NewLinkedList();
     ReadAccountFromFile();
-    PrintList();
     MenuLoop();
     
     return 0;
