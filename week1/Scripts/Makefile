@@ -1,23 +1,23 @@
 CFLAGS = -c -Wall
-gpp = g++
+gcc = gcc
 LIBS =  -lm 
 
 all: program
 
-program: Main.o IOsystem.o DataStructured.o Functionality.o
-	${gpp} Main.o IOsystem.o DataStructured.o Functionality.o -o program
+program: Main.o FileSystem.o DataStructured.o Functionality.o
+	${gcc} Main.o FileSystem.o DataStructured.o Functionality.o -o program
 
-Main.o: Main.cpp
-	${gpp} ${CFLAGS} Main.cpp
+Main.o: Main.c
+	${gcc} ${CFLAGS} Main.c
 
-IOsystem.o: IOsystem.cpp
-	${gpp} ${CFLAGS} IOsystem.cpp
+FileSystem.o: FileSystem.c
+	${gcc} ${CFLAGS} FileSystem.c
 
-DataStructured.o: DataStructured.cpp
-	${gpp} ${CFLAGS} DataStructured.cpp
+DataStructured.o: DataStructured.c
+	${gcc} ${CFLAGS} DataStructured.c
 
-Functionality.o: Functionality.cpp
-	${gpp} ${CFLAGS} Functionality.cpp
+Functionality.o: Functionality.c
+	${gcc} ${CFLAGS} Functionality.c
 
 clean:
 	rm -f *.o *~

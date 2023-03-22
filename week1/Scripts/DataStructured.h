@@ -1,47 +1,44 @@
-#include <iostream>
-#include <string>
-using namespace std;
+#ifndef __DATASTRUCTURED_H__
+#define __DATASTRUCTURED_H__
+#include <stdbool.h>
 
-int const ACTIVE = 1;
-int const BLOCKED = 0;
-int const MAX_ATTEMPTS = 3;
+#define ACTIVE 1
+#define BLOCKED 0
+#define MAX_ATTEMPTS 3
+#define STRING_LENGTH 50
 
-class User
+typedef struct User
 {
-    public:
-        string userName;
-        string passwd;
-        int status;
-        int attempts;
+    char* userName;
+    char* password;
+    int status;
+    int attempts;
+    bool isSignIn;
+} User;
 
-        User(string userName, string passwd);
-        User(string userName, string passwd, int status);
-        ~User();
-};
+User* NewUser(char* userName, char* password);
+User* LoadUser(char* userName, char* password, int status);
 
-class Node
+
+typedef struct Node
 {
-    public:
-        User* data;
-        Node* prev;
-        Node* next;
+    User* data;
+    struct Node* prev;
+    struct Node* next;
+} Node;
 
-        Node(User* data);
-};
+Node* NewNode(User* data);
 
-// define doubly linked list class
-class DoublyLinkedList 
+
+typedef struct
 {
-    private:
-        Node* head;
-        Node* tail;
+    Node* head;
+    Node* tail;
+} LinkedList;
 
-    public:
-        DoublyLinkedList() ;
+void NewLinkedList();
+void InsertList(User* user);
+void PrintList();
+User* SearchByUserName(char* userName);
 
-        void Insert(User* user);
-
-        void PrintList();
-
-        User* SearchByUserName(string userName);
-};
+#endif

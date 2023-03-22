@@ -1,14 +1,9 @@
-#include <iostream>
-#include <string>
-#include "IOsystem.h"
+#ifndef __FUNCTIONALITY_H__
+#define __FUNCTIONALITY_H__
 
-using namespace std;
+void Register();
+void SignIn();
+void Search();
+void SignOut();
 
-class Functionality
-{
-    public:
-        void Register(DoublyLinkedList* doublyLinkedList, FileWriter* fileWriter, string& filePath);
-        void SignIn(DoublyLinkedList* doublyLinkedList, FileWriter* filewriter, User** currSignIn, string& filePath);
-        void Search(DoublyLinkedList* doublyLinkedList, User* currSignIn);
-        void SignOut(DoublyLinkedList* doublyLinkedList, User** currSignIn);
-};
+#endif
