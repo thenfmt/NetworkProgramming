@@ -41,7 +41,8 @@
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "typeinfo": "cpp",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "datastructured.h": "c"
     },
     "C_Cpp.dimInactiveRegions": false
 }
