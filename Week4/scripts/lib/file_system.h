@@ -6,5 +6,6 @@
 void ReadAccountFromFile();
 void WriteAccountToFile(User* user);
 void UpdateAccountStatusInFile(User* user);
+void UpdateAccountPassword(User* user);
 
 #endif

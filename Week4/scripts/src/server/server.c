@@ -30,6 +30,7 @@ int accept_client(int server_sock, struct sockaddr_in* client, int* sin_size);
 int receive_message(int server_sock, struct sockaddr_in* client, int sin_size, char* buff);
 int send_message(int server_sock, struct sockaddr_in* client, int sin_size, char* buff);
 void server(int argc, char* argv[]);
+void login(int server_sock, struct sockaddr_in* client, int sin_size, User **currUser, char* buff);
 
 
 int main(int argc, char* argv[])
@@ -107,8 +108,10 @@ void login(int server_sock, struct sockaddr_in* client, int sin_size, User **cur
                 send_message(server_sock, client, sin_size, "OK\n");
                 signInCount++;
                 (*currUser)->isSignIn = true;
-            } else 
-                send_message(server_sock, client, sin_size, "Account nor ready\n");
+            } else {
+                send_message(server_sock, client, sin_size, "Account not ready\n");
+                (*currUser) = NULL;
+            }
         } else {
             send_message(server_sock, client, sin_size, "NOT OK\n");
             (*currUser)->attempts++;
@@ -117,9 +120,23 @@ void login(int server_sock, struct sockaddr_in* client, int sin_size, User **cur
                 UpdateAccountStatusInFile((*currUser));
                 send_message(server_sock, client, sin_size, "Account is blocked\n");
             }
+            (*currUser) = NULL;
         }
+    }
+}
 
+void change_password(int server_sock, struct sockaddr_in* client, int sin_size, User **currUser, char* buff) {
+    if(strcmp(buff, "bye") == 0) {
+        char message[100];
+        sprintf(message, "Goodbye %s\n", (*currUser)->userName);
+        send_message(server_sock, client, sin_size, message);
+
+        (*currUser)->isSignIn = false;
+        signInCount--;
         (*currUser) = NULL;
+    } else {
+        strcpy((*currUser)->password, buff);
+        UpdateAccountPassword((*currUser));
     }
 }
 
@@ -133,6 +150,8 @@ void process_user_input(int server_sock, struct sockaddr_in* client, int sin_siz
 
     if(signInCount == 0) {
         login(server_sock, client, sin_size, currUser, buff);
+    } else {
+        change_password(server_sock, client, sin_size, currUser, buff);
     }
 }
 

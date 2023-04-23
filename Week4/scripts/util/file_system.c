@@ -91,3 +91,43 @@ void UpdateAccountStatusInFile(User* user)
 
     fclose(file);
 }
+
+void UpdateAccountPassword(User* user) 
+{
+    FILE* file = fopen(FILE_PATH, "r+");
+    if (file == NULL) 
+    {
+        // Handling errors when the file cannot be opened
+        return;
+    }
+
+    FILE* tempfp = fopen("temp.txt", "w");
+
+    // Exit if files couldn't be opened
+    if (tempfp == NULL) {
+        return;
+    }
+
+    char username[STRING_LENGTH];
+    char password[STRING_LENGTH];
+    char line[STRING_LENGTH];
+
+    int status;
+
+    while (fscanf(file, "%s %s %d", username, password, &status) == 3) 
+    {
+        if (strcmp(username, user->userName) != 0) 
+        {
+            fprintf(tempfp, "\n%s %s %d", username, password, status);
+        }
+    }
+
+    fclose(file);
+    fclose(tempfp);
+
+    // Delete original file and rename temporary file to original file
+    remove(FILE_PATH);
+    rename("temp.txt", FILE_PATH);
+
+    WriteAccountToFile(user);
+}
