@@ -137,6 +137,8 @@ void change_password(int server_sock, struct sockaddr_in* client, int sin_size, 
     } else {
         strcpy((*currUser)->password, buff);
         UpdateAccountPassword((*currUser));
+        string_validation(buff);
+        send_message(server_sock, client, sin_size, buff);
     }
 }
 
